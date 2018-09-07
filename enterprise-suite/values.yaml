@@ -26,8 +26,13 @@ nodeExporterVersion: v0.15.2
 imagePullPolicy: IfNotPresent
 # prometheus annotation domain, e.g. `domain/scrape=true`
 prometheusDomain: prometheus.io
-# include minikube debug resources?
+# minikube debug resources
 minikube: false
+# commercial image credentials - username and password are required
+imageCredentials:
+  registry: lightbend-docker-commercial-registry.bintray.io
+  username: setme
+  password: setme
 
 #################################################
 # ResourceRequests
@@ -38,3 +43,9 @@ defaultCPURequest: 100m
 defaultMemoryRequest: 50Mi
 # Prometheus resource request for memory
 prometheusMemoryRequest: 250Mi
+
+##################################################
+# Internal variables - should not be set by users.
+#
+# Enable credentials secret generation, disabled for all.yaml generation.
+internalEnableCredentialsSecret: true

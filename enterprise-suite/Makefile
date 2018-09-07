@@ -77,7 +77,7 @@ MINIKUBE=true
 $(HELM_CHARTS_DIR)/docs/$(RELEASE_NAME)/$(ALL_YAML): $(HELM_CHARTS_DIR)/docs/$(RELEASE).tgz
 	$(call banner)
 	mkdir -p $(HELM_CHARTS_DIR)/docs/$(RELEASE_NAME)
-	helm --namespace=$(NAMESPACE) template $< --set minikube=$(MINIKUBE) > $@
+	helm --namespace=$(NAMESPACE) template $< --set minikube=$(MINIKUBE),internalEnableCredentialsSecret=false > $@
 
 TILLER_NAMESPACE := kube-system
 
@@ -91,10 +91,7 @@ delete-local:  ## Delete chart from cluster with helm
 	-helm delete --purge $(RELEASE_NAME)
 
 install-local: $(HELM_CHARTS_DIR)/docs/$(RELEASE).tgz install-helm delete-local  ## Install local chart
-	helm install $(HELM_CHARTS_DIR)/docs/$(RELEASE).tgz --name=$(RELEASE_NAME) --namespace=$(NAMESPACE) --debug --wait --set minikube=$(MINIKUBE)
-
-#
-##
+	ES_LOCAL_CHART=$(HELM_CHARTS_DIR)/docs/$(RELEASE).tgz ES_MINIKUBE=true ./install-es.sh
 
 help:  ## Print help for targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(lastword $(MAKEFILE_LIST)) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
