@@ -91,7 +91,7 @@ delete-local:  ## Delete chart from cluster with helm
 	-helm delete --purge $(RELEASE_NAME)
 
 install-local: $(HELM_CHARTS_DIR)/docs/$(RELEASE).tgz install-helm delete-local  ## Install local chart
-	ES_LOCAL_CHART=$(HELM_CHARTS_DIR)/docs/$(RELEASE).tgz ES_MINIKUBE=true ./install-es.sh
+	ES_LOCAL_CHART=$(HELM_CHARTS_DIR)/docs/$(RELEASE).tgz ES_MINIKUBE=$(MINIKUBE) ./install-es.sh
 
 help:  ## Print help for targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(lastword $(MAKEFILE_LIST)) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
